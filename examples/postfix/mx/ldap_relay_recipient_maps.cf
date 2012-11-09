@@ -1,0 +1,15 @@
+server_host = ldap1.example.net ldap2.example.net
+server_port = 389
+version = 3
+tls_ca_cert_file = /etc/ssl/example/example-ca.crt
+start_tls = yes
+timeout = 5
+bind = yes
+bind_dn = cn=postfix,dc=example,dc=com
+bind_pw = secret
+search_base = ou=%d,ou=relay_recipient_maps,dc=example,dc=com
+scope = one
+query_filter = (uid=%s)
+result_filter = OK
+result_attribute = uid
+

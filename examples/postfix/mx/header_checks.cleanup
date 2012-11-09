@@ -1,0 +1,8 @@
+#
+# header_checks.cleanup
+#
+# Throw away headers added by local content filtering like
+# spamassassin and clamav proxies.
+#
+
+/^Received: from mx\d\.example\.(net|com) \(localhost \[127\.0\.0\.1\]\)/     IGNORE

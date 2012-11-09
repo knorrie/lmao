@@ -1,0 +1,164 @@
+# Postfix master process configuration file.  For details on the format
+# of the file, see the master(5) manual page (command: "man 5 master").
+#
+# ==========================================================================
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (yes)   (never) (100)
+# ==========================================================================
+smtp      inet  n       -       -       -       -       smtpd
+    -o content_filter=clamsmtp:127.0.0.1:10024
+    -o receive_override_options=no_address_mappings
+    -o cleanup_service_name=pre-cleanup
+#submission inet n       -       -       -       -       smtpd
+#  -o smtpd_enforce_tls=yes
+#  -o smtpd_sasl_auth_enable=yes
+#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+#smtps     inet  n       -       -       -       -       smtpd
+#  -o smtpd_tls_wrappermode=yes
+#  -o smtpd_sasl_auth_enable=yes
+#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+#628      inet  n       -       -       -       -       qmqpd
+pickup    fifo  n       -       -       60      1       pickup
+    -o cleanup_service_name=pre-cleanup
+pre-cleanup   unix  n       -       -       -       0       cleanup
+cleanup   unix  n       -       -       -       0       cleanup
+    -o mime_header_checks=
+    -o nested_header_checks=
+    -o body_checks=
+    -o header_checks=pcre:/etc/postfix/header_checks.cleanup
+qmgr      fifo  n       -       n       300     1       qmgr
+#qmgr     fifo  n       -       -       300     1       oqmgr
+tlsmgr    unix  -       -       -       1000?   1       tlsmgr
+rewrite   unix  -       -       -       -       -       trivial-rewrite
+bounce    unix  -       -       -       -       0       bounce
+defer     unix  -       -       -       -       0       bounce
+trace     unix  -       -       -       -       0       bounce
+verify    unix  -       -       -       -       1       verify
+flush     unix  n       -       -       1000?   0       flush
+proxymap  unix  -       -       n       -       -       proxymap
+smtp      unix  -       -       -       -       -       smtp
+# When relaying mail as backup MX, disable fallback_relay to avoid MX loops
+relay     unix  -       -       -       -       -       smtp
+	-o fallback_relay=
+#       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+showq     unix  n       -       -       -       -       showq
+error     unix  -       -       -       -       -       error
+discard   unix  -       -       -       -       -       discard
+local     unix  -       n       n       -       -       local
+virtual   unix  -       n       n       -       -       virtual
+lmtp      unix  -       -       -       -       -       lmtp
+anvil     unix  -       -       -       -       1       anvil
+scache    unix  -       -       -       -       1       scache
+retry     unix  -       -       -       -       -       error
+#
+# ====================================================================
+# Interfaces to non-Postfix software. Be sure to examine the manual
+# pages of the non-Postfix software to find out what options it wants.
+#
+# Many of the following services use the Postfix pipe(8) delivery
+# agent.  See the pipe(8) man page for information about ${recipient}
+# and other message envelope options.
+# ====================================================================
+#
+# maildrop. See the Postfix MAILDROP_README file for details.
+# Also specify in main.cf: maildrop_destination_recipient_limit=1
+#
+#maildrop  unix  -       n       n       -       -       pipe
+#  flags=DRhu user=vmail argv=/usr/bin/maildrop -d ${recipient}
+#
+# See the Postfix UUCP_README file for configuration details.
+#
+#uucp      unix  -       n       n       -       -       pipe
+#  flags=Fqhu user=uucp argv=uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
+#
+# Other external delivery methods.
+#
+#ifmail    unix  -       n       n       -       -       pipe
+#  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r $nexthop ($recipient)
+#bsmtp     unix  -       n       n       -       -       pipe
+#  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t$nexthop -f$sender $recipient
+#scalemail-backend unix	-	n	n	-	2	pipe
+#  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
+#mailman   unix  -       n       n       -       -       pipe
+#  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
+#  ${nexthop} ${user}
+
+#
+#   ----> 25 postfix -------------------------.
+#         smtpd_*_restrictions,pre-cleanup    |
+#                                             |
+#   ,--------- 10024 clamsmtp <---------------'
+#   |
+#   `---> 10025 postfix ---------------.
+#                                      |
+#   ,--------- 10026 spampd <----------'
+#   |
+#   `---> 10027 postfix --------------------->
+#         address mappings 
+
+# ClamSMTP
+clamsmtp unix -      -       -       -       16       smtp
+    -o smtp_data_done_timeout=1200
+    -o disable_dns_lookups=yes
+    -o max_use=20
+    -o smtp_bind_address=127.0.0.1
+    -o smtp_tls_security_level=none
+#    -o smtp_send_xforward_command=yes
+# smtp_send_xforward_command breaks mailgraph
+
+127.0.0.1:10025 inet n  -       -       -       -       smtpd
+    -o content_filter=spampd:127.0.0.1:10026
+    -o local_recipient_maps=
+    -o relay_recipient_maps=
+    -o smtpd_restriction_classes=
+    -o smtpd_delay_reject=no
+    -o smtpd_client_restrictions=permit_mynetworks,reject
+    -o smtpd_helo_restrictions=
+    -o smtpd_sender_restrictions=
+    -o smtpd_recipient_restrictions=permit_mynetworks,reject
+    -o mynetworks_style=host
+    -o mynetworks=127.0.0.0/8
+    -o strict_rfc821_envelopes=yes
+    -o smtpd_error_sleep_time=0
+    -o smtpd_soft_error_limit=1001
+    -o smtpd_hard_error_limit=1000
+    -o receive_override_options=no_unknown_recipient_checks,no_address_mappings
+    -o smtpd_authorized_xforward_hosts=127.0.0.0/8
+    -o smtpd_client_connection_count_limit=0
+    -o smtpd_client_connection_rate_limit=0
+    -o smtpd_tls_security_level=none
+
+# SpamPD
+
+spampd unix -      -       -       -       16       smtp
+    -o smtp_data_done_timeout=1200
+    -o disable_dns_lookups=yes
+    -o max_use=20
+    -o smtp_bind_address=127.0.0.1
+    -o smtp_tls_security_level=none
+#    -o smtp_send_xforward_command=yes
+# smtp_send_xforward_command breaks mailgraph
+
+127.0.0.1:10027 inet n  -       -       -       -       smtpd
+    -o content_filter=
+    -o local_recipient_maps=
+    -o relay_recipient_maps=
+    -o smtpd_restriction_classes=
+    -o smtpd_delay_reject=no
+    -o smtpd_client_restrictions=permit_mynetworks,reject
+    -o smtpd_helo_restrictions=
+    -o smtpd_sender_restrictions=
+    -o smtpd_recipient_restrictions=permit_mynetworks,reject
+    -o mynetworks_style=host
+    -o mynetworks=127.0.0.0/8
+    -o strict_rfc821_envelopes=yes
+    -o smtpd_error_sleep_time=0
+    -o smtpd_soft_error_limit=1001
+    -o smtpd_hard_error_limit=1000
+    -o receive_override_options=no_unknown_recipient_checks
+    -o smtpd_authorized_xforward_hosts=127.0.0.0/8
+    -o smtpd_client_connection_count_limit=0
+    -o smtpd_client_connection_rate_limit=0
+    -o smtpd_tls_security_level=none
+
+# vim:ts=4:sw=4:expandtab

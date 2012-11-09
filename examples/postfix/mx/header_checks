@@ -1,0 +1,10 @@
+#
+# header_checks
+#
+
+# DKIM headers are great! You can reliably filter spam based on them. :-)
+#
+
+/^DKIM-Signature.*updates\.ziffdavismail\.com/     REJECT GTFO
+/^DKIM-Signature.*businesswatchnetwork\.com/       REJECT GTFO
+

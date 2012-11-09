@@ -1,0 +1,61 @@
+# check_client_access.pcre
+#
+# Reverse DNS Blacklisting and Greylisting
+#
+
+#### Part I #### Reverse DNS Filtering ####
+
+# Using 5xy error code, we unconditionally reject on PTR regex match
+
+# Example:
+#
+# rb198.internetdsl.tpnet.pl
+/\.internetdsl\.tpnet\.pl$/        554 Rejected by PTR lookup - send complaints to postmaster at example.com.
+
+#### Part II #### Greylisting ####
+
+# Before triggering greylisting on suspicious PTR information, or the lack of 
+# PTR, insert FP rules
+# 
+# I have seen two cases of this in the past 8 years, both were severly ENOCLUE
+# misconfigured mailservers that should never have been allowed to talk to the
+# world directly using SMTP. But, there were users which we're MX for that
+# needed to receive mail from them. Trying to educate them resulted in far more
+# trouble than just adding an exception.
+#
+# Example:
+#
+# Severely broken DNS-config, in combination with severely broken SMTP-server.
+# Tries each MX one time and never retries after being temporarily hold off by
+# greylisting. These hosts should use their ISP or outgoing mailserver of anyone
+# who knows how to behave.
+#
+# Using the DUNNO result instead of OK makes postfix evaluate the next step in
+# filtering instead of just stop and allow right now.
+/^203\.0\.113\.13$/                DUNNO
+/^198\.51\.100\.37$/               DUNNO
+
+# So, who we're gonna greylist?
+
+# clients without reverse DNS
+/^unknown$/                        greylisting
+
+# But not... server-like addresses
+# http://sqlgrey.bouton.name/smtp_server.regexp (does 404 now)
+/^(.+[._-])*(apache|bounce|bulk|delay|d?ns|external|extranet|filter|firewall|forward|gateway|gw|m?liste?s?|(bulk|dead|mass|send|[eqw])?mail(er)?|e?mail(agent|host|hub|scan(ner)?)|messagerie|mta|v?mx|out(bound)?|pop|postfix|w?proxy|rela(is|y)|serveu?r|smarthost|v?smtp|web|www)(gate|mail|mx|pool|out|server)?[0-9]*[._-]/	DUNNO
+
+# hostname starts with numeric ipv4 address, like 088156207202.slp.vectranet.pl
+/^[0-9]{10,12}/                   greylisting
+
+# hostname starts with hex ipv4 address or 
+# like 0x573145f8.esnxx4.adsl-dhcp.tele.dk, ip51cd0055.adsl-surfen.hetnet.nl
+/^(0x|ip|a|c)[a-f0-9]{8}\./       greylisting
+
+# everything with an ip-address like hostname...
+# notice: be sure we do not match plain ip addresses
+/(\d{1,3}[.-]){3}[a-z]/           greylisting
+
+# http://sqlgrey.bouton.name/dyn_fqdn.regexp (does 404 now)
+/(^|[0-9.x_-])(abo|br(e|oa)dband|cabel|(hk)?cablep?|catv|cbl|cidr|d?client2?|cust(omer)?s?|dhcp|dial?(in|up)?|d[iu]p|[asx]?dsld?|dyn(a(dsl|mic)?)?|home|in-addr|modem(cable)?|(di)?pool|ppp|ptr|rev|static|user|YahooBB[0-9]{12}|c[[:alnum:]]{6,}(\.[a-z]{3})?\.virtua|[1-9]Cust[0-9]+|AC[A-Z][0-9A-F]{5}\.ipt|S0106[[:alnum:]]{12,}\.[a-z]{2})[0-9.x_-]/       greylisting
+
+# vim:ts=8:sw=8:textwidth=80:noexpandtab

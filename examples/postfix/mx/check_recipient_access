@@ -1,0 +1,23 @@
+# check_recipient_access
+#
+# Do not apply mail filtering on abuse or postmaster addresses! These role
+# accounts are escpecially meant to be available for 'human' end users to
+# complain when they can't get their legitimate email through.
+#
+# It might happen you get truckloads of spam on e.g. the postmaster account of a
+# specific mail domain you're handling mail for. In that case, reject mail with
+# a logical message which will tell the other person where to try instead to
+# report the problem.
+#
+
+# Too much spam...
+postmaster@example.net		554 Rejected - please send postmaster mail to postmaster at example.com instead.
+
+# No need to check the domain names here, reject_unauth_destination just did
+# that for us. (well, only if you have configured check_recipient_access after
+# reject_unauth_destination of course. :-) )
+
+abuse@				OK
+postmaster@			OK
+
+# vim:ts=8:sw=8:textwidth=80:noexpandtab

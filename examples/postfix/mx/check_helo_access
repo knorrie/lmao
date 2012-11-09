@@ -1,0 +1,21 @@
+# check_helo_access
+
+# Refuse HELO/EHLO with our IP-adres or hostname or localhost...
+
+192.0.2.1			REJECT
+[192.0.2.1]			REJECT
+192.0.2.2			REJECT
+[192.0.2.2]			REJECT
+
+mx1.example.com			REJECT
+mx2.example.com			REJECT
+
+mx1.example.net			REJECT
+mx2.example.net			REJECT
+
+localhost			REJECT
+localhost.localdomain		REJECT
+127.0.0.1			REJECT
+[127.0.0.1]			REJECT
+
+# vim:ts=8:sw=8:textwidth=80:noexpandtab

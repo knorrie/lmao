@@ -1,0 +1,26 @@
+# check_sender_mx_access.cidr
+#
+# reject mail with invalid MX records for envelope-from domains
+
+0.0.0.0/8       REJECT Domain MX in broadcast network
+10.0.0.0/8      REJECT Domain MX in RFC 1918 private network
+127.0.0.0/8     REJECT Domain MX in loopback network
+169.254.0.0/16  REJECT Domain MX in link local network
+172.16.0.0/12   REJECT Domain MX in RFC 1918 private network
+192.0.2.0/24    REJECT Domain MX in TEST-NET-1 network
+192.168.0.0/16  REJECT Domain MX in RFC 1918 private network
+198.51.100.0/24 REJECT Domain MX in TEST-NET-2 network
+203.0.113.0/24  REJECT Domain MX in TEST-NET-3 network
+224.0.0.0/4     REJECT Domain MX in class D multicast network
+240.0.0.0/5     REJECT Domain MX in class E reserved network
+248.0.0.0/5     REJECT Domain MX in reserved network
+
+::1/128         REJECT Domain MX is Loopback address
+::/128          REJECT Domain MX is Unspecified address
+::/96           REJECT Domain MX in IPv4-Compatible IPv6
+#::ffff:0:0/96   REJECT Domain MX in IPv4-Mapped IPv6
+ff00::/8        REJECT Domain MX in Multicast network
+fe80::/10       REJECT Domain MX in Link-local unicast network
+fec0::/10       REJECT Domain MX in Site-local unicast network
+
+# vim:ts=8:sw=8:textwidth=80:noexpandtab
