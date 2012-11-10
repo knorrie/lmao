@@ -1,0 +1,161 @@
+#
+# smtp.example.com
+#
+
+# basic settings
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
+program_directory = /usr/lib/postfix
+myhostname = smtp.example.com
+myorigin = smtp.example.com
+mydomain = example.com
+
+# both IPv4 and IPv6
+inet_interfaces = all
+inet_protocols = all
+
+# Caution: in order to avoid mail delivery loops, you must list
+# all hostnames of the machine, including $myhostname, and localhost.$mydomain.
+mydestination =
+    $myhostname
+    localhost
+    localhost.$mydomain
+
+# Be explicit, no default subdomain matching.
+parent_domain_matches_subdomains =
+
+#
+mynetworks =
+    127.0.0.0/8
+    [::1]/128
+    x.y.z.0/24 # local subnet that can send mail through this smtp host
+
+# SMTP Auth op poort 587
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_local_domain =
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+smtpd_tls_auth_only = yes
+smtpd_sasl_authenticated_header = yes
+
+# TLS
+smtpd_tls_security_level = may
+smtpd_tls_key_file = /etc/ssl/example/example.com.key
+smtpd_tls_cert_file = /etc/ssl/example/example.com.crt
+smtpd_tls_CApath = /etc/ssl/certs
+smtpd_tls_loglevel = 1
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_database = sdbm:/etc/postfix/smtpd_scache
+smtpd_tls_session_cache_timeout = 3600s
+
+smtp_tls_security_level = may
+smtp_tls_CApath = /etc/ssl/certs
+
+### Relay and Access control
+
+# Requiring that the client sends the HELO or EHLO command before sending
+# the MAIL FROM or ETRN command.
+smtpd_helo_required = yes
+
+# Disallowing illegal syntax in MAIL FROM or RCPT TO commands.
+strict_rfc821_envelopes = yes
+
+# Optional SMTP server access restrictions in the context of a client
+# SMTP connection request.
+smtpd_client_restrictions =
+    permit_sasl_authenticated
+    permit_mynetworks
+    reject
+
+# Optional restrictions that the Postfix SMTP server applies in the context
+# of the SMTP HELO command.
+smtpd_helo_restrictions =
+    permit_sasl_authenticated
+    reject_invalid_hostname
+
+# Optional restrictions that the Postfix SMTP server applies in the context
+# of the MAIL FROM command.
+smtpd_sender_restrictions =
+    reject_non_fqdn_sender
+    reject_unknown_sender_domain
+# voor *alle* email wordt een sender in een domein dat niet bestaat geweigerd!
+
+# The access restrictions that the Postfix SMTP server applies in the
+# context of the RCPT TO command.
+smtpd_recipient_restrictions =
+    permit_sasl_authenticated
+    reject_non_fqdn_recipient
+    reject_unknown_recipient_domain
+    permit_auth_destination
+    permit_mynetworks
+    reject
+# bounce recipient errors to MUA's, reject when servers/mynetworks connect
+
+# Optional access restrictions that the Postfix SMTP server applies in the
+# context of the SMTP DATA command.
+smtpd_data_restrictions =
+    reject_multi_recipient_bounce
+    reject_unauth_pipelining
+
+# Header/body checks
+header_checks = pcre:/etc/postfix/header_checks
+
+# Connection rate limiting to stop runaway clients, /60s
+smtpd_client_recipient_rate_limit = 100
+
+#### local domain and delivery settings ####
+# aliassen op deze machine
+alias_maps =
+    hash:/etc/aliases
+    hash:/var/lib/mailman/data/aliases
+alias_database = hash:/etc/aliases
+
+# define which email is accepted for delivery only
+# let op: zet *alle* lokale emailadressen in /etc/aliases
+local_recipient_maps =
+    hash:/etc/aliases
+
+# The default setting is 550 (reject mail) but it is safer to start
+# with 450 (try again later) until you are certain that your
+# local_recipient_maps settings are OK.
+#
+unknown_local_recipient_reject_code = 550
+
+# The numerical Postfix SMTP server response code when a sender or recipient
+# address is rejected by the reject_unknown_sender_domain or
+# reject_unknown_recipient_domain restriction.
+unknown_address_reject_code = 550
+
+#### Virtual domains ####
+virtual_alias_domains =
+
+#### Relay domains ####
+relay_domains =
+relay_recipient_maps =
+
+#### Transport ###
+transport_maps =
+
+# /usr/share/doc/mailman/README.POSTFIX.gz
+owner_request_special = no
+
+# some other options
+smtpd_banner = smtp.example.com ESMTP Postfix
+setgid_group = postdrop
+show_user_unknown_table_name = no
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+mailbox_size_limit = 0
+recipient_delimiter = +
+
+message_size_limit = 25000000
+
+#
+#soft_bounce = yes
+
+# Uncomment the next line to generate "delayed mail" warnings
+delay_warning_time = 24h
+
+# vim:ts=4:sw=4:expandtab
