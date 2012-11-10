@@ -1,0 +1,93 @@
+#
+# imap.example.com
+#
+# Alleen alles naar een smarthost duwen
+#
+
+# basic settings
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
+program_directory = /usr/lib/postfix
+myhostname = imap.example.com
+myorigin = imap.example.com
+mydomain = example.com
+
+# IPv4 en IPv6 doen
+inet_interfaces = all
+inet_protocols = all
+
+# Caution: in order to avoid mail delivery loops, you must list
+# all hostnames of the machine, including $myhostname, and localhost.$mydomain.
+mydestination =
+    $myhostname
+    localhost
+    localhost.$mydomain
+
+# Be explicit, no default subdomain matching.
+parent_domain_matches_subdomains =
+
+#
+mynetworks = 127.0.0.0/8, [::1]/128
+
+# TLS
+smtp_tls_security_level = may
+smtp_tls_CAfile = /etc/ssl/example/example-ca.crt
+smtp_tls_CApath = /etc/ssl/certs
+
+#### local domain and delivery settings ####
+# aliassen op deze machine
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+
+# define which email is accepted for delivery only
+# let op: zet *alle* lokale emailadressen in /etc/aliases
+local_recipient_maps =  hash:/etc/aliases
+
+# The default setting is 550 (reject mail) but it is safer to start
+# with 450 (try again later) until you are certain that your
+# local_recipient_maps settings are OK.
+#
+unknown_local_recipient_reject_code = 550
+
+# Be explicit, no relay_domains
+relay_domains =
+# Be explicit, no valid relay recipients
+relay_recipient_maps =
+
+# The numerical Postfix SMTP server response code when a sender or recipient
+# address is rejected by the reject_unknown_sender_domain or
+# reject_unknown_recipient_domain restriction.
+unknown_address_reject_code = 550
+
+# virtual mailbox domains
+virtual_mailbox_domains = proxy:ldap:/etc/postfix/ldap_virtual_mailbox_domains.cf
+virtual_mailbox_maps = proxy:ldap:/etc/postfix/ldap_virtual_mailbox_maps.cf
+dovecot_destination_recipient_limit = 1
+virtual_transport = dovecot 
+
+# Relay
+relayhost = smtp.example.com
+
+# some other options
+smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+setgid_group = postdrop
+show_user_unknown_table_name = no
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+mailbox_size_limit = 0
+recipient_delimiter = +
+
+message_size_limit = 25000000
+
+#
+#soft_bounce = yes
+
+# Uncomment the next line to generate "delayed mail" warnings
+delay_warning_time = 24h
+
+# proxy_read_maps voor de ldap-lookups
+proxy_read_maps =
+    proxy:ldap:/etc/postfix/ldap_virtual_mailbox_domains.cf
+    proxy:ldap:/etc/postfix/ldap_virtual_mailbox_maps.cf
