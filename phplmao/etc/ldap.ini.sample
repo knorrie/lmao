@@ -1,0 +1,12 @@
+;
+; LDAP inloggegevens
+;
+
+[ldap]
+ldap_host = "localhost"
+ldap_port = 389
+ldap_binddn = "cn=apadmin,dc=example,dc=com"
+ldap_passwd = "secret"
+ldap_base_people = "ou=people,dc=example,dc=com"
+ldap_base_mailalias = "ou=mailalias,dc=example,dc=com"
+ldap_base_mailbox = "ou=mailbox,dc=example,dc=com"

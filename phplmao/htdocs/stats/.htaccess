@@ -1,0 +1,8 @@
+RewriteEngine On
+
+RewriteBase   /ap/stats
+RewriteRule   ^([a-z.]+)/$                        stats.php?vhost=$1&html=index
+RewriteRule   ^([a-z.]+)/index\.html?$            stats.php?vhost=$1&html=index
+RewriteRule   ^([a-z.]+)/(usage_[0-9]{6})\.html$  stats.php?vhost=$1&html=$2
+RewriteRule   ^([a-z.]+)/([a-z0-9_]+)\.png$       stats.php?vhost=$1&png=$2
+

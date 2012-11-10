@@ -1,0 +1,21 @@
+S.P.I.R.I.T. Management interface for hosting at spirit.jeugdkerken.nl
+Copyright (C) 2005-2006 Hans van Kranenburg <beheer@jeugdkerken.nl>
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; version 2 dated June, 1991.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+On Debian GNU/Linux systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL'.
+
+    A copy of the GNU General Public License is also available at
+    <URL:http://www.gnu.org/copyleft/gpl.html>.  You may also obtain
+    it by writing to the Free Software Foundation, Inc., 51 Franklin
+    Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Hans van Kranenburg <beheer@jeugdkerken.nl>

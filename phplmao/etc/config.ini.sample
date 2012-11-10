@@ -1,0 +1,29 @@
+;
+; Algemene instellingen, die worden ingeladen in constanten in php
+; Vooral definieren van paden en basis-urls enzo
+;
+
+[spirit]
+
+; een paar constanten, padnamen zonder trailing slash
+lib_path="/srv/www/www.example.com/ap04/lib"
+data_path="/srv/www/www.example.com/ap04/data"
+etc_path="/etc/antiplesk"
+session_save_path="/srv/www/www.example.com/ap04/data/session"
+
+; urls met trailing slash
+ap_pics="https://www.example.com/ap/ap-pics/"
+ap_url="https://www.example.com/ap/"
+
+; en nog een speciale voor als we $_SERVER["REQUEST_URI"] gebruiken,
+; zonder trailing slash
+ap_server="https://www.example.com"
+
+; verder wat urls naar webmail, statistieken enzo die per server verschillen
+; geef lege strings op als de optie niet getoond moet worden
+webmail_url="https://webmail.example.com/"
+pma_url="https://www.example.com/phpmyadmin/"
+mrts_url="https://www.example.com/mrts/"
+mailgraph_url="https://www.example.com/cgi-bin/mailgraph.cgi"
+mailqueue_url=""
+

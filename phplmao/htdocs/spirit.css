@@ -1,0 +1,147 @@
+BODY {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	color:#000000;
+	}
+PRE {
+	background-color : #DDDDDD;
+	}
+.TABLE	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	color:#000000;
+	padding: 0.03em 0.0em 0.0em 0.0em;
+	}
+.REPORT	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	color:#000000;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.TEKST  {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	color:#000000;
+	padding: 0.0em 0.7em 0.0em 0.7em;
+	}
+.TEKSTEDIT {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	color:#000000;
+	padding: 0.1em 0.1em 0.1em 0.1em;
+	}
+.TEKSTERROR {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	color:#A00005;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.TEKSTNOPAD {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	color:#000000;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.MENU	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color:#000066;
+	padding: 0.0em 0.8em 0.0em 0.0em;
+	}
+.MENUGREY {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color:#A4A4A4;
+	padding: 0.0em 0.8em 0.0em 0.0em;
+	}
+.MENUBLACK {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color:#000000;
+	padding: 0.0em 0.8em 0.0em 0.0em;
+	}
+.MENU:hover {
+	text-decoration: underline;
+	padding: 0.0em 0.8em 0.0em 0.0em;
+	}
+.NAV	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 10px;
+	color:#000000;
+	padding: 0.3em 0.0em 0.0em 0.0em;
+	}
+.NAVDISABLE	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 10px;
+	color:#A4A4A4;
+	padding: 0.3em 0.0em 0.0em 0.0em;
+	}
+.NAVA	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 10px;
+	color:#000000;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.NAVA:hover {
+	text-decoration: underline;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+A 	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color:#000066;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	text-decoration: none;
+	}
+A:hover {
+	text-decoration: underline;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.ASIMPLE 	{
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color:#000000;
+	text-decoration: none;
+	}
+.ASIMPLE:hover {
+	text-decoration: underline;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.LINKDISABLE {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color:#000066;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	text-decoration: none;
+	}
+.KOPJE1 {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color:#A00005;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.KOPJE2 {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color:#A00005;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.CREDIT  {
+	font-family: verdana,arial,Helvetica,sans-serif;
+	font-size: 9px;
+	font-weight: normal;
+	color:#000000;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}
+.CREDIT:hover {
+	text-decoration: underline;
+	padding: 0.0em 0.0em 0.0em 0.0em;
+	}

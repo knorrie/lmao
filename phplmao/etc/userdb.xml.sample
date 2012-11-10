@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<userdb>
+
+	<apuser apuserid="nobody">
+		<auth mech="true">foobar</auth>
+		<fullname>Niet ingelogd</fullname>
+	</apuser>
+
+	<apuser apuserid="beheer">
+		<auth mech="ldap_antiplesk">beheer</auth>
+		<auth mech="md5">dd02c7c2232759874e1c205587017bed</auth>
+		<fullname>ServerAdmin Jeugdkerken NL</fullname>
+		<mail>beheer@jeugdkerken.nl</mail>
+		<mailalias>*</mailalias>
+		<mailbox>*</mailbox>
+	</apuser>
+
+	<apuser apuserid="jeugdkerk">
+		<auth mech="ldap_people">jeugdkerk</auth>
+		<fullname>Jan Jeugdkerk</fullname>
+		<mail>webmaster@jeugdkerk.nl</mail>
+		<mail>jan.jeugdkerk@example.com</mail>
+		<www>www.jeugdkerk.nl</www>
+		<mailalias>jeugdkerk.nl</mailalias>
+		<mailbox>jeugdkerk.nl</mailbox>
+		<mailbox>mailbox.jeugdkerk.nl</mailbox>
+		<mysqldb>jeugdkerkdb1</mysqldb>
+	</apuser>
+		
+</userdb>
+

@@ -1,0 +1,46 @@
+<?php
+
+#
+# AntiPlesk 0.4
+#
+# -------------------------------------------------------------------
+# include.config.php
+# -------------------------------------------------------------------
+# Instellingen van het include_path enzo...
+# -------------------------------------------------------------------
+# Historie:
+# 05-04-2006 Hans van Kranenburg
+# . overgenomen van ap 0.3.3 en wat uitgebreid
+# . configuratie die specifiek is voor de installatie uit dit bestand
+#   gehaald en naar een ini-file onder /etc geschoven
+#
+
+define('BASE_PATH','/srv/www/www.example.com/ap');
+$config = parse_ini_file(BASE_PATH . '/etc/config.ini');
+
+# een paar constanten, padnamen zonder trailing slash
+define('LIB_PATH', $config['lib_path']);
+define('DATA_PATH', $config['data_path']);
+define('ETC_PATH', $config['etc_path']);
+# urls met trailing slash
+define('AP_PICS', $config['ap_pics']);
+define('AP_URL', $config['ap_url']);
+# raere eend in de beijt
+define('AP_SERVER', $config['ap_server']);
+
+# wat urls die vooral in het menu gebruikt worden
+define('WEBMAIL_URL', $config['webmail_url']);
+define('PMA_URL', $config['pma_url']);
+define('MRTS_URL', $config['mrts_url']);
+define('MAILGRAPH_URL', $config['mailgraph_url']);
+define('MAILQUEUE_URL', $config['mailqueue_url']);
+
+# We willen geen sessie-id in de url hebben
+#ini_set('session.use_only_cookies', 1); <- staat al in php.ini
+session_save_path($config['session_save_path']);
+
+# wat instellingen
+ini_set('include_path', LIB_PATH . ':' . ini_get('include_path'));
+setlocale(LC_ALL, 'nl_NL.utf8@euro'); # voor datum formatteren enzo
+
+?>

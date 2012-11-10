@@ -1,0 +1,11 @@
+;
+; Authenticatie op basis van IPv4 IP-adres
+;
+
+;
+; Never use this, it's stupid.
+;
+
+[ipauth]
+somebody="212.45.53.195/32"
+anyone="127.0.0.1/8:1.2.3.4/21"
