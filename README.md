@@ -1,7 +1,7 @@
 lmao
 ====
 
-LMAO is the Lightweight Mail Administration O...
+LMAO is the Lightweight Mail Alias Organizer
 
 What you're not going to find here is:
  - some howto you can follow by copy pasting commands
@@ -32,10 +32,10 @@ So instead of having to maintain a list like this (which can very quickly become
     hiring -> jobs
     admin -> rick
     building -> office
-	jill
-	john
-	rick
-	pete
+    jill
+    john
+    rick
+    pete
 
 We can do it like this, e.g. focusing on the actual people that need to receive messages:
 
